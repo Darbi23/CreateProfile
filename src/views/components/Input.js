@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TextInput } from 'react-native';
+import { Icon as Ico } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import COLORS from '../../const/colors';
 
@@ -8,13 +9,15 @@ const Input = ({
   iconName, 
   error, 
   password, 
+  type,
   onFocus = () => {}, 
   ...props
 }) => {
   const [ isFocused, setIsFocused ] = React.useState(false); 
   const [ hidePassword, setHidePassword ] = React.useState(password);
+
   return (
-    <View style={{ marginBottom: 25 }}> 
+    <View style={{ marginBottom: 10 }}> 
       <Text style={styles.label}>{label}</Text>
       <View 
         style={[
@@ -27,8 +30,9 @@ const Input = ({
             : COLORS.light 
           }
         ]}>
-        <Icon name={iconName} style={{ fontSize: 22, color: COLORS.darkblue, marginRight: 10 }}/>
+        <Icon name={iconName} type={type} style={{ fontSize: 22, color: COLORS.darkblue, marginRight: 10 }}/>
         <TextInput 
+          autoCapitalize='none'
           secureTextEntry={hidePassword}
           autoCorrect={false} 
           onFocus={() => {

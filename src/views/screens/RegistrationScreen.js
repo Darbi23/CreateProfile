@@ -1,20 +1,24 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Alert, Keyboard, SafeAreaView, ScrollView, Text, View} from 'react-native';
 import COLORS from '../../const/colors';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import Loader from '../components/Loader';
+import UserContext from '../context/UserContext';
 
 const RegistrationScreen = ({ navigation }) => {
+  const { data, submitData } = useContext(UserContext);
+  const [ errors, setErrors ] = React.useState({});
+  const [loading, setLoading] = React.useState(false);
+
   const [ inputs, setInputs ] = React.useState({
     email: '',
     fullname: '',
     phone: '',
     password: ''
   });
-  const [ errors, setErrors ] = React.useState({});
-  const [loading, setLoading] = React.useState(false);
+
   const validate = () => {
     Keyboard.dismiss();
     let valid = true;
@@ -51,11 +55,12 @@ const RegistrationScreen = ({ navigation }) => {
       setLoading(false);
       try {
         AsyncStorage.setItem("user", JSON.stringify(inputs));
-        navigation.navigate('LoginScreen');
+        submitData(inputs);
+        navigation.navigate('HomeScreen');
       } catch (err) {
         Alert.alert("Error", 'Something went wrong')
       }
-    }, 3000);
+    }, 2000);
   };
 
   const handleOnChange = (text, input) => {
@@ -129,7 +134,6 @@ const RegistrationScreen = ({ navigation }) => {
       </ScrollView>
     </SafeAreaView>
   );
-  
 };
 
 export default RegistrationScreen;
